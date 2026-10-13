@@ -27,6 +27,14 @@ def fiyat_yaz(u):
     return t + "'den" if u.get("fiyat_on") else t
 
 
+def fiyat_html(u, baslangic=False):
+    """Görünen fiyat: '1.300 TL'den' + küçük puntoyla 'başlayan fiyatlarla' (başlangıç fiyatı / araç süsleme)."""
+    t = f"{u['fiyat']:,}".replace(",", ".") + " TL"
+    if baslangic or u.get("fiyat_on"):
+        t += "'den <small>başlayan fiyatlarla</small>"
+    return t
+
+
 def yonelme(ad):
     """Türkçe yönelme eki: Belek'e, Kadriye'ye, Serik'e."""
     son = [c for c in ad.lower() if c in "aeıioöuü"][-1]
@@ -203,7 +211,7 @@ def urun_kart(on, u, bolge=None, oncelik=False):
  <div class="kart-ic">
   <h3>{E(u['ad'])}</h3>
   <p class="kart-a">{E(u['aciklama'])}</p>
-  <p class="fiyat">{fiyat_yaz(u)}</p>
+  <p class="fiyat">{fiyat_html(u)}</p>
   <div class="kart-d"><a class="btn btn-wa" href="{wa(mesaj)}" rel="noopener" target="_blank">{IK['wa']}<span class="uzun">WhatsApp'tan sipariş</span><span class="kisa">Sipariş ver</span></a><a class="btn btn-ara" href="tel:{S['tel_link']}" aria-label="{E(u['ad'])} için ara">{IK['tel']}</a></div>
  </div>
 </article>"""
@@ -267,7 +275,7 @@ def fiyat_tablo(on):
         if not us: continue
         en = min(us, key=lambda u: u["fiyat"])
         satir += (f'<tr><th scope="row"><a href="{on}{k["slug"]}/">{E(k["ad"])}</a></th>'
-                  f'<td>{len(us)}</td><td class="tf">{fiyat_yaz(dict(en, fiyat_on=True)) if not en.get("fiyat_on") else fiyat_yaz(en)}</td></tr>')
+                  f'<td>{len(us)}</td><td class="tf">{fiyat_html(en, baslangic=True)}</td></tr>')
     return f"""<div class="tablo-k"><table class="tablo"><thead><tr><th scope="col">Kategori</th><th scope="col">Fiyatlı ürün</th><th scope="col">Başlangıç fiyatı</th></tr></thead>
 <tbody>{satir}</tbody></table></div>"""
 

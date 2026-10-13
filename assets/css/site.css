@@ -142,6 +142,8 @@ svg{width:1.15em;height:1.15em;fill:currentColor;flex:none}
 .tablo tbody tr:last-child>*{border-bottom:0}
 .tablo a{color:var(--metin);font-weight:700}
 .tf{color:var(--gul);font-weight:700;white-space:nowrap}
+.tf small,.fiyat small{font-size:.68em;font-weight:600;color:var(--soluk);white-space:nowrap}
+.fiyat small{display:block;margin-top:2px;letter-spacing:0}
 
 /* kategori kutuları */
 .kk-izgara{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
@@ -298,6 +300,8 @@ svg{width:1.15em;height:1.15em;fill:currentColor;flex:none}
  .kart-d .btn{font-size:.86rem;padding:11px 8px}.kart-d .btn-ara{display:none}.kart-d .uzun{display:none}.kart-d .kisa{display:inline}
  .rozet{font-size:.62rem;padding:4px 7px;left:6px;top:6px}
  .kk-izgara{grid-template-columns:1fr}
+ .tf small{display:block;margin-top:2px}
+ .tablo th,.tablo td{padding:11px 12px}
  .guven{grid-template-columns:1fr;gap:10px}
  .adim{grid-template-columns:1fr}
  .mg-izgara{grid-template-columns:1fr 1fr}
