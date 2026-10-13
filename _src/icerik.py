@@ -25,7 +25,7 @@ SAYFA = {
         "Belek'te çiçek göndermek istiyorsanız en kısa yol bizi aramak ya da WhatsApp'tan yazmak. Numaramız "
         f"<a href=\"tel:+905346032115\">{TEL}</a>; telefon da WhatsApp da aynı hatta, her gün 24 saat açık.",
         "WhatsApp'tan yazarsanız ürünün fotoğrafını, adresi ve kart notunu tek mesajda gönderebilirsiniz. "
-        "Sitedeki her ürünün altındaki <em>Sipariş ver</em> düğmesi mesaja ürün adını ve fiyatını kendisi "
+        "Sitedeki her ürünün altındaki <em>Sipariş ver</em> düğmesi mesaja ürün adını kendisi "
         "yazıyor; size sadece adresi eklemek kalıyor.",
     ], None),
     ("Belek En Yakın Çiçekçi", [
@@ -43,9 +43,8 @@ SAYFA = {
         "biliyorsanız oda numarasını yazmanız yeterli; teslimi siparişte birlikte netleştiriyoruz.",
     ], None),
     ("Belek Çiçek Fiyatları", [
-        "Fiyatları saklamıyoruz. En uygun buketimiz 1.300 TL, en büyüğü 101 güllü buket 8.600 TL. "
-        "Aşağıdaki tabloda her kategorinin başlangıç fiyatı var; tıklayınca o kategorinin bütün "
-        "ürünlerini fiyatlarıyla görürsünüz.",
+        "Buketlerimiz 1.300 TL'den başlayan fiyatlarla. Aşağıdaki tabloda her kategorinin başlangıç "
+        "fiyatı var; beğendiğiniz ürünün fiyatını WhatsApp'tan ya da telefonla hemen söylüyoruz.",
     ], "fiyat"),
 ],
 # ─────────────────────────────── KADRİYE ───────────────────────────────
@@ -63,7 +62,7 @@ SAYFA = {
         "sürprizi yapmak isteyenler için aşağıda dört ürün önerdik.",
     ], "urunler"),
     ("Kadriye Çiçek Sipariş Ver", [
-        "Ürünün altındaki WhatsApp düğmesine bastığınızda mesaja ürün adı, fiyatı ve Kadriye bilgisi "
+        "Ürünün altındaki WhatsApp düğmesine bastığınızda mesaja ürün adı ve Kadriye bilgisi "
         "kendiliğinden yazılıyor. Siz alıcının adını, adresini ve kartta yazmasını istediğiniz notu ekleyin.",
     ], "adim"),
     ("Kadriye'ye Çiçek Teslimatı Nasıl Yapılıyor?", TESLIM_ORTAK + [
@@ -111,7 +110,7 @@ SAYFA = {
         "giden çiçekler buradan hazırlanıp yola çıkıyor.",
         "Doğum günü, nişan, söz ya da yıldönümü için 51 güllü buketi ve "
         "kalp kutuda 31 gülü öneriyoruz; daha sade bir şey istiyorsanız krizantem "
-        "buketi 1.300 TL.",
+        "buketini öneriyoruz.",
     ], "urunler"),
     ("Serik Çiçek Sipariş Ver", [
         "Siparişi WhatsApp'tan vermek en pratik yol: ürünün altındaki düğmeye basın, mesaj ürün adı ve "
@@ -138,7 +137,7 @@ SAYFA = {
         "odasında da uzun süre güzel kalır. Aşağıda Boğazkent için önerdiğimiz ürünler var.",
     ], "urunler"),
     ("Boğazkent Çiçek Sipariş Ver", [
-        "Ürünün altındaki WhatsApp düğmesine basın; mesaja ürün adı, fiyatı ve Boğazkent bilgisi yazılı gelir. "
+        "Ürünün altındaki WhatsApp düğmesine basın; mesaja ürün adı ve Boğazkent bilgisi yazılı gelir. "
         "Otelin ya da sitenin adını, alıcının adını ve kart notunu ekleyin.",
     ], "adim"),
     ("Boğazkent'e Çiçek Teslimatı Nasıl Yapılıyor?", TESLIM_ORTAK + [
@@ -163,8 +162,8 @@ TESLIM_KISA = [
 KATEGORI = {
 "gul-buketleri": [
     ("Belek Gül Buketi Fiyatları", [
-        "Gül buketlerimiz 9 güllü renkli buketle 1.300 TL'den başlıyor, 101 güllü buketle 8.600 TL'ye kadar "
-        "çıkıyor. Her buketin fiyatı kartın üstünde yazıyor.",
+        "Gül buketlerimiz 1.300 TL'den başlayan fiyatlarla; 9 güllü buketten 101 güllü bukete kadar "
+        "seçenek var. Beğendiğiniz buketin fiyatını WhatsApp'tan hemen yazıyoruz.",
     ], "urunler"),
     ("Kaç Gül Göndermeli?", [
         "Küçük bir \"seni düşündüm\" için 9 gül yeter. 15 ve 21 gül doğum günü "
@@ -180,7 +179,8 @@ KATEGORI = {
 ],
 "orkide-teraryum": [
     ("Belek Orkide Fiyatları", [
-        "İthal orkidelerimiz 1.700 TL, renkli ithal orkide 2.200 TL, teraryum çalışmamız 1.300 TL.",
+        "Orkide ve teraryumlarımız 1.300 TL'den başlayan fiyatlarla. Beğendiğiniz ürünün fiyatını "
+        "WhatsApp'tan hemen yazıyoruz.",
     ], "urunler"),
     ("Orkide mi Buket mi?", [
         "Kesme çiçek birkaç gün güzel kalır; orkide ise doğru yerde haftalarca çiçekte kalabilir. Bu yüzden "
@@ -195,8 +195,8 @@ KATEGORI = {
 ],
 "buketler": [
     ("Belek Çiçek Buketi Fiyatları", [
-        "Karışık krizantem buketi 1.300 TL, lisyantus orta boy renkli buket 1.800 TL. Aşağıdaki diğer "
-        "buketler mevsime göre değişen çiçeklerle hazırlandığı için fiyatlarını WhatsApp'tan soruyoruz.",
+        "Buketlerimiz 1.300 TL'den başlayan fiyatlarla. Mevsime göre değişen çiçeklerle hazırlandıkları "
+        "için fiyatlarını WhatsApp'tan söylüyoruz.",
     ], "urunler"),
     ("Mevsim Çiçeklerinde Fiyat Neden Değişiyor?", [
         "Şebboy, şakayık, papatya ve lisyantus gibi çiçeklerin fiyatı mevsime ve o hafta gelen çiçeğe göre "
@@ -210,8 +210,8 @@ KATEGORI = {
 ],
 "kutuda-aranjman": [
     ("Belek Kutuda Aranjman Fiyatları", [
-        "Kalp kutuda 31 güllü aranjmanımız 4.000 TL. Silindir kutudaki gül, şakayık ve karışık "
-        "aranjmanların fiyatını çiçeğe göre WhatsApp'tan söylüyoruz.",
+        "Kutuda aranjmanlarımız 4.000 TL'den başlayan fiyatlarla. Kalp ve silindir kutudaki gül, şakayık "
+        "ve karışık aranjmanların fiyatını çiçeğe göre WhatsApp'tan söylüyoruz.",
     ], "urunler"),
     ("Kutuda Aranjman mı Buket mi?", [
         "Kutuda aranjmanın en büyük artısı vazo istememesi: çiçek ıslak köpükte durduğu için alıcının "
@@ -225,8 +225,8 @@ KATEGORI = {
 ],
 "hediye-ayicikli": [
     ("Belek Ayıcıklı Buket Fiyatları", [
-        "Kokinalı ayıcıklı buket 3.200 TL, büyük boy peluş ayıcık 3.500 TL, lisanslı büyük boy peluş "
-        "ayıcık 2.600 TL.",
+        "Ayıcıklı ve hediyelik ürünlerimiz 2.600 TL'den başlayan fiyatlarla. Beğendiğiniz ürünün "
+        "fiyatını WhatsApp'tan hemen yazıyoruz.",
     ], "urunler"),
     ("Ayıcıklı Buketi Kime Gönderilir?", [
         "Ayıcıklı buketler sevgiliye, yeni doğan bebeği olan ailelere ve çocuklara güzel gider. "

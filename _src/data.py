@@ -38,9 +38,9 @@ TEYITSIZ = ["15 yıl", "yılı aşkın", "garanti", "en iyi", "en ucuz", "en hı
 KATEGORI = [
     {"slug": "gul-buketleri", "kapak": "21gullu1", "ad": "Gül Buketleri", "kisa": "Gül Buketi", "kisa_menu": "Gül Buketleri",
      "title": "Belek Gül Buketi — 9'dan 101 Güle Fiyatlarıyla",
-     "h1": "Belek gül buketi", "ozet": "9 güllü renkli buketten 101 Rodos gülüne; her buketin fiyatı kartın üstünde."},
+     "h1": "Belek gül buketi", "ozet": "9 güllü renkli buketten 101 Rodos gülüne; fiyatlar 1.300 TL'den başlıyor."},
     {"slug": "orkide-teraryum", "kapak": "tereryum2", "ad": "Orkide ve Teraryum", "kisa": "Orkide", "kisa_menu": "Orkide & Teraryum",
-     "title": "Belek Orkide ve Teraryum — Orkide 1.700 TL",
+     "title": "Belek Orkide ve Teraryum — Fiyatları ve Sipariş",
      "h1": "Belek orkide ve teraryum", "ozet": "Uzun ömürlü hediye arayanlar için ithal orkideler ve sukulent teraryumlar."},
     {"slug": "buketler", "kapak": "lisyantus1", "ad": "Karışık ve Mevsim Buketleri", "kisa": "Buket", "kisa_menu": "Buketler",
      "title": "Belek Çiçek Buketleri — Lisyantus, Krizantem, Şebboy",
@@ -166,8 +166,8 @@ SSS = [
      "Beğendiğiniz ürünün altındaki WhatsApp düğmesine basın; ürün adı mesaja kendiliğinden yazılır. "
      "Teslimat adresini, alıcının adını ve kart notunu ekleyin. İsterseniz 0534 603 21 15'i de arayabilirsiniz."),
     ("Fiyatlar güncel mi?",
-     "Sitedeki fiyatlar mağazadaki fiyatlarla aynıdır. Fiyatı yazmayan ürünler ve özel tasarımlar için "
-     "WhatsApp'tan fotoğrafla fiyat sorabilirsiniz."),
+     "Sitede her kategorinin başlangıç fiyatı yazıyor. Beğendiğiniz ürünün güncel fiyatını WhatsApp'tan "
+     "ya da telefonla hemen söylüyoruz; özel tasarımlar için fotoğraf gönderebilirsiniz."),
     ("Mağazaya gelip kendim alabilir miyim?",
      "Evet. Mağazamız Belek, Vatan Caddesi No:11'de. Her gün 24 saat açığız."),
     ("Otel veya tatil köyüne teslim ediyor musunuz?",
@@ -187,10 +187,10 @@ BALON = [("101gul", "Güller", "gul-buketleri/"), ("21gullu1", "Gül Buketleri",
 # ── Anasayfa bannerları: (renk sınıfı, üst etiket, başlık, alt metin, görsel, hedef) — fiyatlar URUNLER ile tutarlı
 BANNER_BUYUK = [
     ("pembe", "Güller", "Gül Buketleri", "9 gülden 101 güle · 1.300 TL'den", "101gul", "gul-buketleri/"),
-    ("ada", "Uzun ömürlü hediye", "Orkide ve Teraryum", "İthal orkide 1.700 TL · teraryum 1.300 TL", "tereryum2", "orkide-teraryum/"),
+    ("ada", "Uzun ömürlü hediye", "Orkide ve Teraryum", "İthal orkide ve teraryum · 1.300 TL'den", "tereryum2", "orkide-teraryum/"),
 ]
 BANNER_KUCUK = [
-    ("lila", "Yıldönümü", "Kutuda Güller", "Kalp kutuda 31 gül 4.000 TL", "kalp1", "kutuda-aranjman/"),
+    ("lila", "Yıldönümü", "Kutuda Güller", "Kalp ve silindir kutular · 4.000 TL'den", "kalp1", "kutuda-aranjman/"),
     ("sari", "Doğum Günü", "Mevsim Buketleri", "Lisyantus, krizantem, papatya", "mevsimcicekleri2", "buketler/"),
     ("mavi", "Düğün · Nişan", "Gelin Çiçeği", "Gelin buketi ve araç süsleme", "gelin1", "gelin-cicegi-arac-susleme/"),
 ]

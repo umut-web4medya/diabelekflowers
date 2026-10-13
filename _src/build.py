@@ -204,15 +204,14 @@ def sayfa(yol, title, desc, govde, semalar, aktif=""):
 # ── bileşenler ──────────────────────────────────────────────────────────────
 def urun_kart(on, u, bolge=None, oncelik=False):
     nereye = f" {bolge} adresine" if bolge else ""
-    mesaj = f"Merhaba, {u['ad']} ({fiyat_yaz(u)}){nereye} sipariş vermek istiyorum."
+    mesaj = f"Merhaba, {u['ad']}{nereye} sipariş vermek istiyorum. Fiyatını öğrenebilir miyim?"
     rozet = "" if u.get("fiyat_on") else '<span class="rozet">Aynı gün teslimat</span>'
     return f"""<article class="kart" id="{slug(u['ad'])}">
  <div class="kart-g">{resim(on, u['gorsel'][0], u['ad'] + ' — DİA Flowers Belek', oncelik=oncelik)}{rozet}</div>
  <div class="kart-ic">
   <h3>{E(u['ad'])}</h3>
   <p class="kart-a">{E(u['aciklama'])}</p>
-  <p class="fiyat">{fiyat_html(u)}</p>
-  <div class="kart-d"><a class="btn btn-wa" href="{wa(mesaj)}" rel="noopener" target="_blank">{IK['wa']}<span class="uzun">WhatsApp'tan sipariş</span><span class="kisa">Sipariş ver</span></a><a class="btn btn-ara" href="tel:{S['tel_link']}" aria-label="{E(u['ad'])} için ara">{IK['tel']}</a></div>
+{f'  <p class="fiyat">{fiyat_html(u)}</p>' + chr(10) if u.get('fiyat_on') else ''}  <div class="kart-d"><a class="btn btn-wa" href="{wa(mesaj)}" rel="noopener" target="_blank">{IK['wa']}<span class="uzun">WhatsApp'tan sipariş</span><span class="kisa">Sipariş ver</span></a><a class="btn btn-ara" href="tel:{S['tel_link']}" aria-label="{E(u['ad'])} için ara">{IK['tel']}</a></div>
  </div>
 </article>"""
 
@@ -226,7 +225,7 @@ def galeri_kart(on, ad, alt_):
 def kat_kutu(on, k):
     kapak = k.get("kapak") or next((u["gorsel"][0] for u in D.URUNLER if u["kat"] == k["slug"]), None)
     say = sum(1 for u in D.URUNLER if u["kat"] == k["slug"])
-    alt_ = f"{say} fiyatlı ürün" if say else "Fotoğraflı galeri"
+    alt_ = f"{say} ürün" if say else "Fotoğraflı galeri"
     return f"""<a class="kk" href="{on}{k['slug']}/">{resim(on, kapak, k['ad'], sizes='(max-width:640px) 50vw, 320px')}
  <span class="kk-ic"><strong>{E(k['ad'])}</strong><small>{alt_}</small></span></a>"""
 
@@ -235,7 +234,7 @@ def guven(on):
     return f"""<ul class="guven kap">
  <li>{IK['teslim']}<span><b>Aynı gün teslimat</b>Belek, Kadriye, Doğakent, Serik, Boğazkent</span></li>
  <li>{IK['saat']}<span><b>Her gün 24 saat</b>Gece siparişinde de telefonu açıyoruz</span></li>
- <li>{IK['etiket']}<span><b>Fiyatlar açık</b>Her ürünün fiyatı kartında yazıyor</span></li>
+ <li>{IK['etiket']}<span><b>Başlangıç fiyatları açık</b>Ürünün fiyatını WhatsApp'tan hemen yazıyoruz</span></li>
  <li>{IK['wa']}<span><b>WhatsApp'tan sipariş</b>Ürün adı mesaja kendiliğinden yazılır</span></li>
 </ul>"""
 
@@ -353,8 +352,8 @@ def anasayfa():
 <section class="bolum kap sss"><h2>Sık sorulan sorular</h2>{sss}</section>
 {cta(on)}"""
     sayfa("", "Belek Çiçekçi — Aynı Gün Çiçek Teslimatı | DİA Flowers",
-          "Belek, Kadriye, Doğakent, Serik ve Boğazkent'e aynı gün çiçek teslimatı. Gül buketi 1.300 TL'den, "
-          "orkide 1.700 TL. Her gün 24 saat WhatsApp'tan sipariş.", g, [florist_sema(), sss_sema])
+          "Belek, Kadriye, Doğakent, Serik ve Boğazkent'e aynı gün çiçek teslimatı. 1.300 TL'den başlayan "
+          "fiyatlarla. Her gün 24 saat WhatsApp'tan sipariş.", g, [florist_sema(), sss_sema])
 
 
 def kategori_sayfa(k):
@@ -364,10 +363,8 @@ def kategori_sayfa(k):
     kir_html, kir_sema = kirinti("../", [("Anasayfa", ""), (k["ad"], yol)])
     liste = {"@context": "https://schema.org", "@type": "ItemList", "name": k["ad"], "itemListElement": [
         {"@type": "ListItem", "position": i + 1, "item": {
-            "@type": "Product", "name": u["ad"], "description": u["aciklama"],
-            "image": S["alan"] + f"/images/{u['gorsel'][0]}-900.webp",
-            "offers": {"@type": "Offer", "price": u["fiyat"], "priceCurrency": "TRY",
-                       "availability": "https://schema.org/InStock", "seller": {"@id": S["alan"] + "/#isletme"}}}}
+            "@type": "Thing", "name": u["ad"], "description": u["aciklama"],
+            "image": S["alan"] + f"/images/{u['gorsel'][0]}-900.webp"}}
         for i, u in enumerate(urunler)]}
 
     def g(on):
@@ -409,10 +406,10 @@ def bolge_sayfa(b):
         kats = "".join(kat_kutu(on, k) for k in D.KATEGORI)
         sss_h = "".join(f"<details><summary>{E(q)}</summary><p>{E(a)}</p></details>" for q, a in sss)
         return f"""<section class="sb kap">{kir_html}<h1>{E(b['ad'])} çiçekçi — aynı gün çiçek teslimatı</h1>
- <p class="sb-p">{E(b['konum'])} {E(b['ad'])} adresinize gül buketi, orkide, kutuda aranjman ya da ayıcıklı buket gönderiyoruz; fiyatlar aşağıdaki kartlarda yazıyor.</p></section>
+ <p class="sb-p">{E(b['konum'])} {E(b['ad'])} adresinize gül buketi, orkide, kutuda aranjman ya da ayıcıklı buket gönderiyoruz; ürünün fiyatını WhatsApp'tan hemen yazıyoruz.</p></section>
 {guven(on)}
 {metin(on, I.SAYFA[b['slug']], f'<div class="izgara">{kartlar}</div>')}
-<section class="bolum kap"><div class="bas"><h2>{E(b['ad'])} Çiçek Çeşitleri</h2><p>Bütün kategoriler; tıklayınca fiyatlarıyla açılır.</p></div><div class="kk-izgara">{kats}</div></section>
+<section class="bolum kap"><div class="bas"><h2>{E(b['ad'])} Çiçek Çeşitleri</h2><p>Bütün kategoriler; tıklayınca ürünleriyle açılır.</p></div><div class="kk-izgara">{kats}</div></section>
 <section class="bolum kap"><h2>Mağazamızın Konumu</h2><div class="yz"><p>{E(S['adres_satir'])}, {S['posta']} {S['ilce']}/{S['il']} · {E(S['saat'])}</p></div>{harita(on)}</section>
 <section class="bolum kap sss"><h2>{E(b['ad'])} çiçek siparişi: sorular</h2>{sss_h}</section>
 <section class="bolum kap"><h2>Diğer teslimat bölgeleri</h2><div class="etk-satir">{bolge_linkleri(on, b['slug'])}</div></section>
@@ -459,7 +456,7 @@ def yaz_404():
 
 
 def ara_dizin():
-    d = [{"t": u["ad"], "f": fiyat_yaz(u), "u": u["kat"] + "/#" + slug(u["ad"]), "g": u["gorsel"][0], "k": KAT[u["kat"]]["ad"]}
+    d = [{"t": u["ad"], "f": fiyat_yaz(u) if u.get("fiyat_on") else "", "u": u["kat"] + "/#" + slug(u["ad"]), "g": u["gorsel"][0], "k": KAT[u["kat"]]["ad"]}
          for u in D.URUNLER]
     d += [{"t": k["ad"], "f": "", "u": k["slug"] + "/", "g": k["kapak"],
            "k": "Kategori"} for k in D.KATEGORI]
