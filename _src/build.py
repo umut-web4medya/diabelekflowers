@@ -204,7 +204,7 @@ def urun_kart(on, u, bolge=None, oncelik=False):
   <h3>{E(u['ad'])}</h3>
   <p class="kart-a">{E(u['aciklama'])}</p>
   <p class="fiyat">{fiyat_yaz(u)}</p>
-  <div class="kart-d"><a class="btn btn-wa" href="{wa(mesaj)}" rel="noopener" target="_blank">{IK['wa']}WhatsApp'tan sipariş</a><a class="btn btn-ara" href="tel:{S['tel_link']}" aria-label="{E(u['ad'])} için ara">{IK['tel']}</a></div>
+  <div class="kart-d"><a class="btn btn-wa" href="{wa(mesaj)}" rel="noopener" target="_blank">{IK['wa']}<span class="uzun">WhatsApp'tan sipariş</span><span class="kisa">Sipariş ver</span></a><a class="btn btn-ara" href="tel:{S['tel_link']}" aria-label="{E(u['ad'])} için ara">{IK['tel']}</a></div>
  </div>
 </article>"""
 
