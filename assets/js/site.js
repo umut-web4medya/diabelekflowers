@@ -1,9 +1,16 @@
 (function () {
   // mobil menü
   var d = document.querySelector('.menu-d'), m = document.getElementById('menu');
-  if (d && m) d.addEventListener('click', function () {
-    var a = m.classList.toggle('acik'); d.setAttribute('aria-expanded', a ? 'true' : 'false');
-  });
+  if (d && m) {
+    d.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var a = m.classList.toggle('acik'); d.setAttribute('aria-expanded', a ? 'true' : 'false');
+    });
+    // menü dışına dokununca ya da bir bağlantı seçilince kapan
+    document.addEventListener('click', function (e) {
+      if (m.classList.contains('acik') && !m.contains(e.target)) { m.classList.remove('acik'); d.setAttribute('aria-expanded', 'false'); }
+    });
+  }
   // masaüstü açılır menü: dokunmatikte tıkla-aç
   document.querySelectorAll('.acilir-d').forEach(function (b) {
     b.addEventListener('click', function () {

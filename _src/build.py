@@ -144,8 +144,8 @@ def alt(on):
  </div>
 </footer>
 <div class="dock" aria-label="Hızlı iletişim">
- <a class="dock-ara" href="tel:{S['tel_link']}">{IK['tel']}Hemen Ara</a>
- <a class="dock-wa" href="{wa('Merhaba, çiçek siparişi vermek istiyorum.')}" rel="noopener" target="_blank">{IK['wa']}WhatsApp</a>
+ <a class="dock-ara" href="tel:{S['tel_link']}"><span class="dock-ik">{IK['tel']}</span><span class="dock-y"><b>Hemen Ara</b><small>{S['tel_goster']}</small></span></a>
+ <a class="dock-wa" href="{wa('Merhaba, çiçek siparişi vermek istiyorum.')}" rel="noopener" target="_blank"><span class="dock-ik">{IK['wa']}</span><span class="dock-y"><b>WhatsApp</b><small>Sipariş yazın</small></span></a>
 </div>"""
 
 
