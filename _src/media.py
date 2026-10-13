@@ -8,8 +8,13 @@ KOK = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 KAY, HED = os.path.join(KOK, "_src", "kaynak"), os.path.join(KOK, "images")
 GEN = (480, 900)
 
+ACIK = os.path.join(KOK, "_src", "kaynak_acik")   # zemin.py çıktısı (siyah zemin → açık); varsa o kullanılır
+
+
 def uret(ad):
-    src = os.path.join(KAY, ad + ".jpeg")
+    src = os.path.join(ACIK, ad + ".jpeg")
+    if not os.path.exists(src):
+        src = os.path.join(KAY, ad + ".jpeg")
     im = None
     out = {}
     for w in GEN:

@@ -36,22 +36,22 @@ TEYITSIZ = ["15 yıl", "yılı aşkın", "garanti", "en iyi", "en ucuz", "en hı
 
 # ── KATEGORİLER (sayfa) ──────────────────────────────────────────────────────
 KATEGORI = [
-    {"slug": "gul-buketleri", "ad": "Gül Buketleri", "kisa": "Gül Buketi",
+    {"slug": "gul-buketleri", "kapak": "21gullu1", "ad": "Gül Buketleri", "kisa": "Gül Buketi", "kisa_menu": "Gül Buketleri",
      "title": "Belek Gül Buketi — 9'dan 101 Güle Fiyatlarıyla",
      "h1": "Belek gül buketi", "ozet": "9 güllü renkli buketten 101 Rodos gülüne; her buketin fiyatı kartın üstünde."},
-    {"slug": "orkide-teraryum", "ad": "Orkide ve Teraryum", "kisa": "Orkide",
+    {"slug": "orkide-teraryum", "kapak": "tereryum2", "ad": "Orkide ve Teraryum", "kisa": "Orkide", "kisa_menu": "Orkide & Teraryum",
      "title": "Belek Orkide ve Teraryum — Orkide 1.700 TL",
      "h1": "Belek orkide ve teraryum", "ozet": "Uzun ömürlü hediye arayanlar için ithal orkideler ve sukulent teraryumlar."},
-    {"slug": "buketler", "ad": "Karışık ve Mevsim Buketleri", "kisa": "Buket",
+    {"slug": "buketler", "kapak": "lisyantus1", "ad": "Karışık ve Mevsim Buketleri", "kisa": "Buket", "kisa_menu": "Buketler",
      "title": "Belek Çiçek Buketleri — Lisyantus, Krizantem, Şebboy",
      "h1": "Belek çiçek buketleri", "ozet": "Lisyantus, krizantem, şebboy, papatya ve mevsimin çiçekleriyle hazırlanan buketler."},
-    {"slug": "kutuda-aranjman", "ad": "Kutuda Aranjmanlar", "kisa": "Kutu Aranjman",
+    {"slug": "kutuda-aranjman", "kapak": "kutudakirmiziarajman", "ad": "Kutuda Aranjmanlar", "kisa": "Kutu Aranjman", "kisa_menu": "Kutuda Aranjman",
      "title": "Belek Kutuda Çiçek Aranjmanı — Kalp Kutu 31 Gül",
      "h1": "Belek kutuda çiçek aranjmanı", "ozet": "Silindir ve kalp kutularda gül, şakayık ve karışık aranjmanlar."},
-    {"slug": "hediye-ayicikli", "ad": "Ayıcıklı ve Hediyelik", "kisa": "Hediye",
+    {"slug": "hediye-ayicikli", "kapak": "kokoinali", "ad": "Ayıcıklı ve Hediyelik", "kisa": "Hediye", "kisa_menu": "Ayıcıklı & Hediye",
      "title": "Belek Ayıcıklı Buket ve Peluş Ayıcık Hediye",
      "h1": "Belek ayıcıklı buket ve hediyelik", "ozet": "Peluş ayıcıklar, ayıcıklı buketler ve çikolatalı kutular."},
-    {"slug": "gelin-cicegi-arac-susleme", "ad": "Gelin Çiçeği ve Araç Süsleme", "kisa": "Gelin & Araç",
+    {"slug": "gelin-cicegi-arac-susleme", "kapak": "gelin1", "ad": "Gelin Çiçeği ve Araç Süsleme", "kisa": "Gelin & Araç", "kisa_menu": "Gelin & Araç Süsleme",
      "title": "Belek Gelin Çiçeği ve Gelin Arabası Süsleme",
      "h1": "Belek gelin çiçeği ve araç süsleme", "ozet": "Gelin buketleri ve düğün, nişan, sünnet için araç süsleme."},
 ]
@@ -173,4 +173,24 @@ SSS = [
     ("Otel veya tatil köyüne teslim ediyor musunuz?",
      "Teslimat adresi olarak otel adını ve oda/misafir adını yazmanız yeterli; teslim koşullarını "
      "siparişte birlikte netleştiriyoruz."),
+]
+
+# ── Anasayfa yuvarlak kategori balonları (görsel, etiket, hedef sayfa#çapa) ──
+BALON = [("101gul", "Güller", "gul-buketleri/"), ("21gullu1", "Gül Buketleri", "gul-buketleri/"),
+         ("orkide2", "Orkide", "orkide-teraryum/"), ("tereryum1", "Teraryum", "orkide-teraryum/"),
+         ("lisyantus1", "Lisyantus", "buketler/"), ("mevsimcicekleri1", "Mevsim Çiçekleri", "buketler/"),
+         ("papatya", "Papatya", "buketler/"), ("kutudakirmiziarajman", "Kutuda Güller", "kutuda-aranjman/"),
+         ("sakayim1", "Şakayık", "kutuda-aranjman/"), ("kokoinali", "Ayıcıklı", "hediye-ayicikli/"),
+         ("cikolata1", "Çikolata", "hediye-ayicikli/"), ("gelin1", "Gelin Çiçeği", "gelin-cicegi-arac-susleme/"),
+         ("araba1", "Araç Süsleme", "gelin-cicegi-arac-susleme/")]
+
+# ── Anasayfa bannerları: (renk sınıfı, üst etiket, başlık, alt metin, görsel, hedef) — fiyatlar URUNLER ile tutarlı
+BANNER_BUYUK = [
+    ("pembe", "Güller", "Gül Buketleri", "9 gülden 101 güle · 1.300 TL'den", "101gul", "gul-buketleri/"),
+    ("ada", "Uzun ömürlü hediye", "Orkide ve Teraryum", "İthal orkide 1.700 TL · teraryum 1.300 TL", "tereryum2", "orkide-teraryum/"),
+]
+BANNER_KUCUK = [
+    ("lila", "Yıldönümü", "Kutuda Güller", "Kalp kutuda 31 gül 4.000 TL", "kalp1", "kutuda-aranjman/"),
+    ("sari", "Doğum Günü", "Mevsim Buketleri", "Lisyantus, krizantem, papatya", "mevsimcicekleri2", "buketler/"),
+    ("mavi", "Düğün · Nişan", "Gelin Çiçeği", "Gelin buketi ve araç süsleme", "gelin1", "gelin-cicegi-arac-susleme/"),
 ]

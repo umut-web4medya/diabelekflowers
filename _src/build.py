@@ -46,6 +46,7 @@ IK = {
     "saat": '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm.75 10.4 3.6 2.15-.75 1.25L11.25 13V7h1.5z"/></svg>',
     "teslim": '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h11v9h2.2l1.3-4H20l1 3v4h-1.6a2.5 2.5 0 0 1-4.8 0H9.4a2.5 2.5 0 0 1-4.8 0H3zm4 13.2a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm10 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/></svg>',
     "etiket": '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h8l10 10-8 8L3 11zm4.5 6A1.5 1.5 0 1 0 6 7.5 1.5 1.5 0 0 0 7.5 9z"/></svg>',
+    "ara": '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.5 3a7.5 7.5 0 0 1 5.9 12.1l4.3 4.3-1.4 1.4-4.3-4.3A7.5 7.5 0 1 1 10.5 3zm0 2a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11z"/></svg>',
     "menu": '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>',
     "ok": '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 5l7 7-7 7-1.4-1.4 4.6-4.6H4v-2h12.2l-4.6-4.6z"/></svg>',
 }
@@ -87,23 +88,42 @@ def kirinti(on, yol):
     return f'<nav class="kirinti" aria-label="Sayfa yolu">{html_}</nav>', sema
 
 
+def slug(t):
+    tr = str.maketrans("çğıöşüÇĞİÖŞÜ", "cgiosuCGIOSU")
+    return re.sub(r"[^a-z0-9]+", "-", t.translate(tr).lower()).strip("-")
+
+
 def ust(on, aktif):
-    kats = "".join(f'<a href="{on}{k["slug"]}/">{E(k["ad"])}</a>' for k in D.KATEGORI)
     bols = "".join(f'<a href="{on}{bolge_url(b)}">{E(b["ad"])}</a>' for b in D.BOLGELER)
-    return f"""<header class="ust">
+    ac = ' aria-current="page"'
+    kats = "".join(f'<a href="{on}{k["slug"]}/"{ac if aktif == k["slug"] else ""}>{E(k["kisa_menu"])}</a>'
+                   for k in D.KATEGORI)
+    return f"""<div class="duyuru"><div class="kap duyuru-ic">
+ <span class="duyuru-slogan">Belek'in çiçekçisi</span>
+ <span class="duyuru-orta">{IK['teslim']}<b>Aynı gün teslimat</b><span class="duyuru-ay">Belek · Kadriye · Doğakent · Serik · Boğazkent</span></span>
+ <a class="duyuru-tel" href="tel:{S['tel_link']}">{IK['saat']}Her gün 24 saat · {S['tel_goster']}</a>
+</div></div>
+<header class="ust">
  <div class="kap ust-ic">
-  <a class="logo" href="{on}" aria-label="DİA Flowers Belek anasayfa"><span class="logo-dia">DİA</span><span class="logo-fl">Flowers<small>Belek</small></span></a>
-  <nav class="menu" id="menu" aria-label="Ana menü">
-   <div class="acilir"><button type="button" class="acilir-d" aria-expanded="false">Çiçekler</button><div class="acilir-ic">{kats}</div></div>
-   <div class="acilir"><button type="button" class="acilir-d" aria-expanded="false">Teslimat Bölgeleri</button><div class="acilir-ic">{bols}</div></div>
-   <a href="{on}iletisim/"{' aria-current="page"' if aktif == 'iletisim' else ''}>Mağaza &amp; İletişim</a>
-  </nav>
+  <a class="logo" href="{on}" aria-label="DİA Flowers Belek anasayfa"><img src="{on}images/favicon-192.png" width="40" height="40" alt=""><span class="logo-y"><span class="logo-dia">DİA <i>Flowers</i></span><small>Belek · Serik</small></span></a>
+  <form class="ara" role="search" action="{on}" data-kok="{on}" onsubmit="return false">
+   <label class="atla" for="ara-g">Ürün, kategori ya da bölge ara</label>
+   <input id="ara-g" type="search" placeholder="Gül, orkide, Kadriye… ara" autocomplete="off" enterkeyhint="search">
+   <button type="submit" aria-label="Ara">{IK['ara']}</button>
+   <div class="ara-sonuc" hidden></div>
+  </form>
   <div class="ust-sag">
-   <a class="dg dg-wa" href="{wa('Merhaba, çiçek siparişi vermek istiyorum.')}" rel="noopener" target="_blank">{IK['wa']}<span class="dg-yz">WhatsApp</span></a>
-   <a class="dg dg-ara" href="tel:{S['tel_link']}">{IK['tel']}<span class="dg-yz">{S['tel_goster']}</span></a>
+   <a class="ik-l" href="{on}iletisim/"{' aria-current="page"' if aktif == 'iletisim' else ''}>{IK['konum']}<span>Mağaza</span></a>
+   <a class="dg dg-wa" href="{wa('Merhaba, çiçek siparişi vermek istiyorum.')}" rel="noopener" target="_blank">{IK['wa']}<span class="dg-yz">WhatsApp Sipariş</span></a>
    <button class="menu-d" type="button" aria-controls="menu" aria-expanded="false" aria-label="Menüyü aç">{IK['menu']}</button>
   </div>
  </div>
+ <nav class="menu" id="menu" aria-label="Kategoriler">
+  <div class="kap menu-ic">{kats}
+   <div class="acilir"><button type="button" class="acilir-d" aria-expanded="false">Teslimat Bölgeleri</button><div class="acilir-ic">{bols}</div></div>
+   <a href="{on}iletisim/" class="menu-son">İletişim</a>
+  </div>
+ </nav>
 </header>"""
 
 
@@ -145,7 +165,7 @@ def sayfa(yol, title, desc, govde, semalar, aktif=""):
 <title>{E(title)}</title>
 <meta name="description" content="{E(desc)}">
 <link rel="canonical" href="{canon}">
-<meta name="theme-color" content="#3A1F3D">
+<meta name="theme-color" content="#1F7A4D">
 <meta property="og:type" content="website"><meta property="og:locale" content="tr_TR">
 <meta property="og:title" content="{E(title)}"><meta property="og:description" content="{E(desc)}">
 <meta property="og:url" content="{canon}"><meta property="og:image" content="{S['alan']}/images/og.jpg">
@@ -177,14 +197,14 @@ def sayfa(yol, title, desc, govde, semalar, aktif=""):
 def urun_kart(on, u, bolge=None, oncelik=False):
     nereye = f" {bolge} adresine" if bolge else ""
     mesaj = f"Merhaba, {u['ad']} ({fiyat_yaz(u)}){nereye} sipariş vermek istiyorum."
-    ek = ""
-    return f"""<article class="kart">
- <div class="kart-g">{resim(on, u['gorsel'][0], u['ad'] + ' — DİA Flowers Belek', oncelik=oncelik)}{ek}</div>
+    rozet = "" if u.get("fiyat_on") else '<span class="rozet">Aynı gün teslimat</span>'
+    return f"""<article class="kart" id="{slug(u['ad'])}">
+ <div class="kart-g">{resim(on, u['gorsel'][0], u['ad'] + ' — DİA Flowers Belek', oncelik=oncelik)}{rozet}</div>
  <div class="kart-ic">
   <h3>{E(u['ad'])}</h3>
-  <p class="fiyat">{fiyat_yaz(u)}</p>
   <p class="kart-a">{E(u['aciklama'])}</p>
-  <div class="kart-d"><a class="btn btn-wa" href="{wa(mesaj)}" rel="noopener" target="_blank">{IK['wa']}Sipariş ver</a><a class="btn btn-ara" href="tel:{S['tel_link']}" aria-label="{E(u['ad'])} için ara">{IK['tel']}</a></div>
+  <p class="fiyat">{fiyat_yaz(u)}</p>
+  <div class="kart-d"><a class="btn btn-wa" href="{wa(mesaj)}" rel="noopener" target="_blank">{IK['wa']}WhatsApp'tan sipariş</a><a class="btn btn-ara" href="tel:{S['tel_link']}" aria-label="{E(u['ad'])} için ara">{IK['tel']}</a></div>
  </div>
 </article>"""
 
@@ -196,7 +216,7 @@ def galeri_kart(on, ad, alt_):
 
 
 def kat_kutu(on, k):
-    kapak = next((u["gorsel"][0] for u in D.URUNLER if u["kat"] == k["slug"]), None)
+    kapak = k.get("kapak") or next((u["gorsel"][0] for u in D.URUNLER if u["kat"] == k["slug"]), None)
     say = sum(1 for u in D.URUNLER if u["kat"] == k["slug"])
     alt_ = f"{say} fiyatlı ürün" if say else "Fotoğraflı galeri"
     return f"""<a class="kk" href="{on}{k['slug']}/">{resim(on, kapak, k['ad'], sizes='(max-width:640px) 50vw, 320px')}
@@ -291,16 +311,27 @@ def anasayfa():
         kartlar = "".join(urun_kart(on, URUN[a], oncelik=False) for a in populer)
         kats = "".join(kat_kutu(on, k) for k in D.KATEGORI)
         sss = "".join(f"<details><summary>{E(q)}</summary><p>{E(a)}</p></details>" for q, a in D.SSS)
-        return f"""<section class="hero">
- <div class="kap hero-ic">
-  <div class="hero-yazi">
-   <p class="ust-etiket">Belek · Kadriye · Doğakent · Serik · Boğazkent</p>
-   <h1>Belek çiçekçi: <em>aynı gün</em> kapıda</h1>
-   <p class="hero-p">Gül buketi, orkide, kutuda aranjman ve gelin çiçeği. Fiyatlar kartların üstünde; seçtiğiniz ürünü WhatsApp'tan yazın, Belek'teki mağazamızdan hazırlayıp gönderelim.</p>
-   <div class="hero-d"><a class="btn btn-wa" href="{wa('Merhaba, çiçek siparişi vermek istiyorum.')}" rel="noopener" target="_blank">{IK['wa']}WhatsApp'tan sipariş</a><a class="btn btn-acik" href="tel:{S['tel_link']}">{IK['tel']}{S['tel_goster']}</a></div>
-  </div>
-  <div class="hero-g">{resim(on, 'kutudakirmiziarajman', 'Siyah kutuda kırmızı güller — DİA Flowers Belek', 'hg1', oncelik=True, sizes='(max-width:640px) 60vw, 340px')}{resim(on, 'orkide2', 'İthal orkide', 'hg2', sizes='(max-width:640px) 40vw, 220px')}{resim(on, 'lisyantus1', 'Lisyantus buketi', 'hg3', sizes='(max-width:640px) 40vw, 220px')}</div>
- </div>
+        balon = "".join(f'<a class="balon" href="{on}{u}"><span class="balon-g">{resim(on, g_, a_, sizes="96px")}</span><span>{E(a_)}</span></a>'
+                        for g_, a_, u in D.BALON)
+
+        def ban(b, buyuk):
+            renk, ust_, bas, alt_, g_, u = b
+            return (f'<a class="ban ban-{renk}{" ban-b" if buyuk else ""}" href="{on}{u}"><span class="ban-y">'
+                    f'<small>{E(ust_)}</small><strong>{E(bas)}</strong><em>{E(alt_)}</em>'
+                    f'<span class="ban-p">{IK["teslim"]}Aynı gün teslimat</span></span>'
+                    f'{resim(on, g_, bas, "ban-g", oncelik=buyuk, sizes="(max-width:640px) 45vw, 300px")}</a>')
+        bans_b = "".join(ban(b, True) for b in D.BANNER_BUYUK)
+        bans_k = "".join(ban(b, False) for b in D.BANNER_KUCUK)
+        return f"""<section class="kap balonlar" aria-label="Çiçek kategorileri"><div class="balon-serit">{balon}</div></section>
+<section class="kap vitrin" aria-label="Öne çıkanlar">
+ <div class="vitrin-b">{bans_b}</div>
+ <div class="vitrin-k">{bans_k}</div>
+</section>
+<section class="kap giris">
+ <div><p class="ust-etiket">Belek · Kadriye · Doğakent · Serik · Boğazkent</p>
+  <h1 class="giris-bas">Belek çiçekçi: <em>aynı gün</em> kapıda</h1>
+  <p class="giris-p">Gül buketi, orkide, kutuda aranjman ve gelin çiçeği. Fiyatlar kartların üstünde; seçtiğiniz ürünü WhatsApp'tan yazın, Belek'teki mağazamızdan hazırlayıp gönderelim.</p></div>
+ <div class="giris-d"><a class="btn btn-wa" href="{wa('Merhaba, çiçek siparişi vermek istiyorum.')}" rel="noopener" target="_blank">{IK['wa']}WhatsApp'tan sipariş</a><a class="btn btn-acik" href="tel:{S['tel_link']}">{IK['tel']}{S['tel_goster']}</a></div>
 </section>
 {guven(on)}
 {metin(on, I.SAYFA[""][:2])}
@@ -348,7 +379,7 @@ def kategori_sayfa(k):
 {cta(on)}"""
     desc = f"{k['ozet']} Belek'teki DİA Flowers'tan aynı gün teslimat; WhatsApp'tan sipariş."
     sema = [florist_sema(False), kir_sema] + ([liste] if urunler else [])
-    sayfa(yol, k["title"] + " | DİA Flowers", desc[:158], g, sema)
+    sayfa(yol, k["title"] + " | DİA Flowers", desc[:158], g, sema, aktif=k["slug"])
 
 
 def bolge_sayfa(b):
@@ -419,6 +450,18 @@ def yaz_404():
     open(os.path.join(KOK, "404.html"), "w", encoding="utf-8").write(h)
 
 
+def ara_dizin():
+    d = [{"t": u["ad"], "f": fiyat_yaz(u), "u": u["kat"] + "/#" + slug(u["ad"]), "g": u["gorsel"][0], "k": KAT[u["kat"]]["ad"]}
+         for u in D.URUNLER]
+    d += [{"t": k["ad"], "f": "", "u": k["slug"] + "/", "g": k["kapak"],
+           "k": "Kategori"} for k in D.KATEGORI]
+    d += [{"t": a + " (fotoğraf)", "f": "Fiyat sorun", "u": k + "/", "g": g, "k": KAT[k]["ad"]}
+          for k, liste in D.GALERI.items() for g, a in liste]
+    d += [{"t": b["ad"] + " çiçekçi", "f": "", "u": bolge_url(b), "g": "magaza", "k": "Teslimat bölgesi"} for b in D.BOLGELER]
+    with open(os.path.join(KOK, "assets", "ara.json"), "w", encoding="utf-8") as f:
+        json.dump(d, f, ensure_ascii=False, separators=(",", ":"))
+
+
 def ekler():
     with open(os.path.join(KOK, "sitemap.xml"), "w", encoding="utf-8") as f:
         f.write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n')
@@ -437,4 +480,5 @@ if __name__ == "__main__":
     iletisim()
     yaz_404()
     ekler()
+    ara_dizin()
     print(f"tamam: {len(SAYFALAR)} sayfa + 404")
