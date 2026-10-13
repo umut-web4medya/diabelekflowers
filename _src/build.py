@@ -307,10 +307,45 @@ def bolge_linkleri(on, haric=None):
     return "".join(f'<a class="etk" href="{on}{bolge_url(b)}">{E(b["ad"])}</a>' for b in D.BOLGELER if b["slug"] != haric)
 
 
+def balonlar(on):
+    b = "".join(f'<a class="balon" href="{on}{u}"><span class="balon-g">{resim(on, g_, a_, sizes="96px")}</span><span>{E(a_)}</span></a>'
+                for g_, a_, u in D.BALON)
+    return f'<section class="kap balonlar" aria-label="Çiçek kategorileri"><div class="balon-serit">{b}</div></section>'
+
+
+def ic_hero(on, kir_html, h1, p, gorseller, wa_mesaj, renk, baslangic):
+    """İç sayfa hero'su: başlık + sipariş/arama düğmeleri + ürün fotoğrafı kolajı (reklam iniş sayfaları)."""
+    kolaj = "".join(f'<figure>{resim(on, g_, a_, oncelik=(i == 0), sizes="(max-width:900px) 50vw, 300px")}</figure>'
+                    for i, (g_, a_) in enumerate(gorseller[:3]))
+    return f"""<section class="kap"><div class="ic-hero ban-{renk}">
+ <div class="ic-y">{kir_html}<h1>{E(h1)}</h1><p class="ic-p">{E(p)}</p>
+  <div class="ic-d"><a class="btn btn-wa" href="{wa(wa_mesaj)}" rel="noopener" target="_blank">{IK['wa']}WhatsApp'tan sipariş</a><a class="btn btn-mavi" href="tel:{S['tel_link']}">{IK['tel']}Hemen ara · {S['tel_goster']}</a></div>
+  <ul class="ic-cip"><li>{IK['teslim']}Aynı gün teslimat</li><li>{IK['saat']}Her gün 24 saat</li><li>{IK['etiket']}{baslangic} TL'den başlayan fiyatlarla</li></ul>
+ </div>
+ <div class="ic-kolaj">{kolaj}</div>
+</div></section>"""
+
+
+def urun_izgara(on, urunler, bolge=None):
+    return '<div class="izgara">' + "".join(urun_kart(on, u, bolge=bolge) for u in urunler) + "</div>"
+
+
+POPULER = ["101 Rodos Gül Buketi (60 cm)", "İthal Orkideler", "Kalp Kutu 31 Güllü Aranjman", "21 Güllü Buket",
+           "Lisyantus Orta Boy Renkli Buket", "Kokinalı Ayıcıklı Buket", "Dokuz Güllü Renkli Buket", "Teraryum Çalışması"]
+
+
+def diger_urunler(haric):
+    """Sayfada olmayan ürünler; önce popülerler, sonra kalanlar (veri sırası)."""
+    sira = list({id(u): u for u in [URUN[a] for a in POPULER] + list(D.URUNLER)}.values())
+    return [u for u in sira if not haric(u)]
+
+
+def tl(n): return f"{n:,}".replace(",", ".")
+
+
 # ── sayfalar ────────────────────────────────────────────────────────────────
 def anasayfa():
-    populer = ["101 Rodos Gül Buketi (60 cm)", "İthal Orkideler", "Kalp Kutu 31 Güllü Aranjman", "21 Güllü Buket",
-               "Lisyantus Orta Boy Renkli Buket", "Kokinalı Ayıcıklı Buket", "Dokuz Güllü Renkli Buket", "Teraryum Çalışması"]
+    populer = POPULER
     sss_sema = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
         {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in D.SSS]}
 
@@ -367,18 +402,31 @@ def kategori_sayfa(k):
             "image": S["alan"] + f"/images/{u['gorsel'][0]}-900.webp"}}
         for i, u in enumerate(urunler)]}
 
+    # ürünlerin kartta görünmeyen fotoğrafları da galeriye (orkide/gül sayfaları aksi hâlde 3–8 kartla kalıyordu)
+    ek_foto = [(g_, u["ad"]) for u in urunler for g_ in u["gorsel"][1:]]
+    kat_i = next(i for i, x in enumerate(D.KATEGORI) if x is k)
+    renk = ["pembe", "ada", "sari", "lila", "mavi", "ada"][kat_i % 6]
+
     def g(on):
-        kartlar = "".join(urun_kart(on, u, oncelik=(i == 0)) for i, u in enumerate(urunler))
-        gal = "".join(galeri_kart(on, a, t) for a, t in galeri)
+        kartlar = "".join(urun_kart(on, u, oncelik=False) for u in urunler)
+        gal = "".join(galeri_kart(on, a, t) for a, t in ek_foto + galeri)
         diger = "".join(f'<a class="etk" href="{on}{x["slug"]}/">{E(x["ad"])}</a>' for x in D.KATEGORI if x is not k)
-        gal_html = (f"""<section class="bolum kap"><div class="bas"><h2>Mağazadan diğer çalışmalar</h2>
- <p>Bu çalışmaların fiyatı çiçeğin mevsimine göre değişiyor. Fotoğrafın altındaki düğmeyle fiyat sorabilirsiniz.</p></div>
+        kats = "".join(kat_kutu(on, x) for x in D.KATEGORI if x is not k)
+        gal_html = (f"""<section class="bolum kap"><div class="bas"><h2>Daha Fazla {E(k['kisa'])} Modeli</h2>
+ <p>Mağazamızda hazırladığımız çalışmalar. Beğendiğinizin altındaki düğmeyle fiyat sorabilirsiniz.</p></div>
  <div class="g-izgara">{gal}</div></section>""" if gal else "")
         govde = metin(on, I.KATEGORI[k["slug"]], f'<div class="izgara">{kartlar}</div>')
-        return f"""<section class="sb kap">{kir_html}<h1>{E(k['h1'])}</h1><p class="sb-p">{E(k['ozet'])} Belek, Kadriye, Doğakent, Serik ve Boğazkent'e aynı gün teslim ediyoruz.</p></section>
+        kolaj = [(u["gorsel"][0], u["ad"]) for u in urunler] + ek_foto + galeri
+        bas = min((u["fiyat"] for u in urunler), default=1300)
+        return f"""{balonlar(on)}
+{ic_hero(on, kir_html, k['h1'], k['ozet'] + " Belek, Kadriye, Doğakent, Serik ve Boğazkent'e aynı gün teslim ediyoruz.", kolaj,
+         f"Merhaba, {k['kisa']} siparişi vermek istiyorum.", renk, tl(bas))}
 {guven(on)}
 {govde}
 {gal_html}
+<section class="bolum kap"><div class="bas"><h2>Diğer Çiçeklerimiz</h2><p>Gül, orkide, kutuda aranjman ve hediyelikler; hepsi aynı gün teslim.</p></div>
+ {urun_izgara(on, diger_urunler(lambda u: u["kat"] == k["slug"])[:12])}</section>
+<section class="bolum kap"><div class="bas"><h2>Çiçek Çeşitleri</h2><p>Tıklayınca o kategorinin bütün ürünleri açılır.</p></div><div class="kk-izgara">{kats}</div></section>
 <section class="bolum kap"><h2>Diğer çiçekler</h2><div class="etk-satir">{diger}</div>
  <h2 class="ara-bas">Teslimat bölgeleri</h2><div class="etk-satir">{bolge_linkleri(on)}</div></section>
 {cta(on)}"""
@@ -402,13 +450,18 @@ def bolge_sayfa(b):
         {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in sss]}
 
     def g(on):
-        kartlar = "".join(urun_kart(on, u, bolge=b["ad"], oncelik=(i == 0)) for i, u in enumerate(secilen))
+        kartlar = "".join(urun_kart(on, u, bolge=b["ad"]) for u in secilen)
         kats = "".join(kat_kutu(on, k) for k in D.KATEGORI)
         sss_h = "".join(f"<details><summary>{E(q)}</summary><p>{E(a)}</p></details>" for q, a in sss)
-        return f"""<section class="sb kap">{kir_html}<h1>{E(b['ad'])} çiçekçi — aynı gün çiçek teslimatı</h1>
- <p class="sb-p">{E(b['konum'])} {E(b['ad'])} adresinize gül buketi, orkide, kutuda aranjman ya da ayıcıklı buket gönderiyoruz; ürünün fiyatını WhatsApp'tan hemen yazıyoruz.</p></section>
+        kolaj = [(u["gorsel"][0], u["ad"]) for u in secilen]
+        return f"""{balonlar(on)}
+{ic_hero(on, kir_html, f"{b['ad']} çiçekçi — aynı gün çiçek teslimatı",
+         f"{b['konum']} {b['ad']} adresinize gül buketi, orkide, kutuda aranjman ya da ayıcıklı buket gönderiyoruz; ürünün fiyatını WhatsApp'tan hemen yazıyoruz.",
+         kolaj, f"Merhaba, {b['ad']} adresine çiçek siparişi vermek istiyorum.", "pembe", "1.300")}
 {guven(on)}
 {metin(on, I.SAYFA[b['slug']], f'<div class="izgara">{kartlar}</div>')}
+<section class="bolum kap"><div class="bas"><h2>{E(b['ad'])} İçin Tüm Çiçeklerimiz</h2><p>Gül, orkide, kutuda aranjman ve hediyelikler; {E(yonelme(b['ad']))} aynı gün teslim.</p></div>
+ {urun_izgara(on, diger_urunler(lambda u: any(u is x for x in secilen)), bolge=b['ad'])}</section>
 <section class="bolum kap"><div class="bas"><h2>{E(b['ad'])} Çiçek Çeşitleri</h2><p>Bütün kategoriler; tıklayınca ürünleriyle açılır.</p></div><div class="kk-izgara">{kats}</div></section>
 <section class="bolum kap"><h2>Mağazamızın Konumu</h2><div class="yz"><p>{E(S['adres_satir'])}, {S['posta']} {S['ilce']}/{S['il']} · {E(S['saat'])}</p></div>{harita(on)}</section>
 <section class="bolum kap sss"><h2>{E(b['ad'])} çiçek siparişi: sorular</h2>{sss_h}</section>
