@@ -6,6 +6,7 @@ Tüm iç yollar göreli (ONEK) → GitHub Pages alt yolunda da çalışır. 404.
 import hashlib, html, json, os, re, sys, urllib.parse
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import data as D
+import icerik as I
 import media
 
 KOK = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -211,13 +212,12 @@ def guven(on):
 </ul>"""
 
 
-def nasil():
-    return """<section class="bolum kap"><h2>Sipariş üç adımda</h2>
- <ol class="adim">
+def adim_liste():
+    return """<ol class="adim">
   <li><b>Ürünü seçin.</b> Kartın altındaki <em>Sipariş ver</em> düğmesi WhatsApp'ı ürün adıyla açar.</li>
   <li><b>Adresi ve notu yazın.</b> Alıcının adı, teslim adresi, teslim saati ve kartta yazmasını istediğiniz not.</li>
   <li><b>Hazırlayıp yola çıkaralım.</b> Siparişi Belek'teki mağazamızda hazırlayıp aynı gün teslim ediyoruz.</li>
- </ol></section>"""
+ </ol>"""
 
 
 def harita(on):
@@ -226,11 +226,10 @@ def harita(on):
 </div>"""
 
 
-def magaza(on):
+def magaza_ic(on):
     fotos = "".join(f'<figure>{resim(on, a, t, sizes="(max-width:640px) 100vw, 360px")}</figure>' for a, t in D.MAGAZA[:2])
-    return f"""<section class="bolum magaza kap">
- <div class="mg-yazi"><h2>Belek'teki mağazamız</h2>
-  <p>Siparişler, Vatan Caddesi'ndeki mağazamızda hazırlanıyor. Gelip çiçeği kendiniz seçebilir ya da adrese gönderebilirsiniz.</p>
+    return f"""<div class="magaza">
+ <div class="mg-yazi">
   <ul class="bilgi">
    <li>{IK['konum']}<span>{E(S['adres_satir'])}, {S['posta']} {S['ilce']}/{S['il']}</span></li>
    <li>{IK['tel']}<a href="tel:{S['tel_link']}">{S['tel_goster']}</a></li>
@@ -238,7 +237,32 @@ def magaza(on):
   </ul>
   <a class="btn btn-ana" href="{S['harita_link']}" rel="noopener" target="_blank">{IK['konum']}Yol tarifi al</a></div>
  <div class="mg-foto">{fotos}</div>
-</section>"""
+</div>"""
+
+
+def fiyat_tablo(on):
+    satir = ""
+    for k in D.KATEGORI:
+        us = [u for u in D.URUNLER if u["kat"] == k["slug"]]
+        if not us: continue
+        en = min(us, key=lambda u: u["fiyat"])
+        satir += (f'<tr><th scope="row"><a href="{on}{k["slug"]}/">{E(k["ad"])}</a></th>'
+                  f'<td>{len(us)}</td><td class="tf">{fiyat_yaz(dict(en, fiyat_on=True)) if not en.get("fiyat_on") else fiyat_yaz(en)}</td></tr>')
+    return f"""<div class="tablo-k"><table class="tablo"><thead><tr><th scope="col">Kategori</th><th scope="col">Fiyatlı ürün</th><th scope="col">Başlangıç fiyatı</th></tr></thead>
+<tbody>{satir}</tbody></table></div>"""
+
+
+def metin(on, bolumler, urun_html=""):
+    """icerik.py bölümleri → HTML. Paragraflar güvenilir kaynak (bizim dosyamız), içinde <a>/<em> olabilir."""
+    out = ""
+    for h2, paras, isaret in bolumler:
+        ek = {"urunler": urun_html, "fiyat": fiyat_tablo(on), "adim": adim_liste(),
+              "magaza": magaza_ic(on), None: ""}[isaret]
+        sinif = " genis" if isaret in ("urunler", "magaza") else ""
+        p = "".join(f"<p>{x}</p>" for x in paras)
+        kimlik = ' id="teslimat"' if "Teslimatı Nasıl" in h2 else ""
+        out += f'<section class="bolum kap yazi{sinif}"{kimlik}><h2>{E(h2)}</h2><div class="yz">{p}</div>{ek}</section>\n'
+    return out
 
 
 def cta(on, metin="Aklınızdaki çiçek listede yoksa fotoğrafını gönderin; benzerini hazırlayalım."):
@@ -279,13 +303,13 @@ def anasayfa():
  </div>
 </section>
 {guven(on)}
-<section class="bolum kap"><div class="bas"><h2>Çiçekler</h2><p>Altı başlıkta 18 fiyatlı ürün ve 50'yi aşkın fotoğraflı çalışma.</p></div>
- <div class="kk-izgara">{kats}</div></section>
-<section class="bolum kap"><div class="bas"><h2>En çok sorulanlar</h2><p>Fiyatı belli, fotoğrafı mağazada çekilmiş ürünler.</p></div>
+{metin(on, I.SAYFA[""][:2])}
+<section class="bolum kap"><div class="bas"><h2>Belek'te Öne Çıkan Çiçekler</h2><p>Fiyatı belli, fotoğrafı mağazamızda çekilmiş ürünler.</p></div>
  <div class="izgara">{kartlar}</div></section>
-{nasil()}
-{magaza(on)}
-<section class="bolum kap"><div class="bas"><h2>Teslimat bölgeleri</h2><p>Her bölge için ayrı sayfada o bölgede en çok gönderilen çiçekler var.</p></div>
+<section class="bolum kap"><div class="bas"><h2>Çiçek Çeşitleri</h2><p>Altı başlıkta 18 fiyatlı ürün ve 50'yi aşkın fotoğraflı çalışma.</p></div>
+ <div class="kk-izgara">{kats}</div></section>
+{metin(on, I.SAYFA[""][2:])}
+<section class="bolum kap"><div class="bas"><h2>Teslimat Bölgeleri</h2><p>Belek dışındaki her bölge için ayrı bir sayfamız var.</p></div>
  <div class="etk-satir">{bolge_linkleri(on)}</div></section>
 <section class="bolum kap sss"><h2>Sık sorulan sorular</h2>{sss}</section>
 {cta(on)}"""
@@ -314,12 +338,11 @@ def kategori_sayfa(k):
         gal_html = (f"""<section class="bolum kap"><div class="bas"><h2>Mağazadan diğer çalışmalar</h2>
  <p>Bu çalışmaların fiyatı çiçeğin mevsimine göre değişiyor. Fotoğrafın altındaki düğmeyle fiyat sorabilirsiniz.</p></div>
  <div class="g-izgara">{gal}</div></section>""" if gal else "")
-        urun_html = (f'<section class="bolum kap"><div class="izgara">{kartlar}</div></section>' if kartlar else "")
+        govde = metin(on, I.KATEGORI[k["slug"]], f'<div class="izgara">{kartlar}</div>')
         return f"""<section class="sb kap">{kir_html}<h1>{E(k['h1'])}</h1><p class="sb-p">{E(k['ozet'])} Belek, Kadriye, Doğakent, Serik ve Boğazkent'e aynı gün teslim ediyoruz.</p></section>
 {guven(on)}
-{urun_html}
+{govde}
 {gal_html}
-{nasil()}
 <section class="bolum kap"><h2>Diğer çiçekler</h2><div class="etk-satir">{diger}</div>
  <h2 class="ara-bas">Teslimat bölgeleri</h2><div class="etk-satir">{bolge_linkleri(on)}</div></section>
 {cta(on)}"""
@@ -335,8 +358,8 @@ def bolge_sayfa(b):
     sss = [
         (f"{yonelme(b['ad'])} aynı gün çiçek gönderebilir miyim?",
          "Evet. Siparişi WhatsApp'tan ya da telefonla verin; teslim saatini sipariş sırasında söylüyoruz."),
-        (f"{b['ad']} için en çok hangi çiçekler gönderiliyor?",
-         "Bu sayfanın başındaki dört ürün: " + ", ".join(b["one_cikan"]) + "."),
+        (f"{b['ad']} için hangi çiçekleri öneriyorsunuz?",
+         "Bu sayfada önerdiğimiz dört ürün: " + ", ".join(b["one_cikan"]) + "."),
         ("Mağazanız nerede?", f"Mağazamız {S['adres_satir']}, {S['ilce']}/{S['il']} adresinde. Her gün 24 saat açığız."),
     ]
     sss_sema = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
@@ -349,12 +372,9 @@ def bolge_sayfa(b):
         return f"""<section class="sb kap">{kir_html}<h1>{E(b['ad'])} çiçekçi — aynı gün çiçek teslimatı</h1>
  <p class="sb-p">{E(b['konum'])} {E(b['ad'])} adresinize gül buketi, orkide, kutuda aranjman ya da ayıcıklı buket gönderiyoruz; fiyatlar aşağıdaki kartlarda yazıyor.</p></section>
 {guven(on)}
-<section class="bolum kap"><div class="bas"><h2>{E(b['ad'])} için en çok gönderilenler</h2><p>WhatsApp düğmesi, mesaja ürün adını ve {E(b['ad'])} bilgisini ekler.</p></div>
- <div class="izgara">{kartlar}</div></section>
-<section class="bolum kap"><div class="bas"><h2>Tüm çiçekler</h2></div><div class="kk-izgara">{kats}</div></section>
-{nasil()}
-{magaza(on)}
-<section class="bolum kap">{harita(on)}</section>
+{metin(on, I.SAYFA[b['slug']], f'<div class="izgara">{kartlar}</div>')}
+<section class="bolum kap"><div class="bas"><h2>{E(b['ad'])} Çiçek Çeşitleri</h2><p>Bütün kategoriler; tıklayınca fiyatlarıyla açılır.</p></div><div class="kk-izgara">{kats}</div></section>
+<section class="bolum kap"><h2>Mağazamızın Konumu</h2><div class="yz"><p>{E(S['adres_satir'])}, {S['posta']} {S['ilce']}/{S['il']} · {E(S['saat'])}</p></div>{harita(on)}</section>
 <section class="bolum kap sss"><h2>{E(b['ad'])} çiçek siparişi: sorular</h2>{sss_h}</section>
 <section class="bolum kap"><h2>Diğer teslimat bölgeleri</h2><div class="etk-satir">{bolge_linkleri(on, b['slug'])}</div></section>
 {cta(on)}"""

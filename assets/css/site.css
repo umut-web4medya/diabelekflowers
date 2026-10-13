@@ -77,6 +77,20 @@ svg{width:1.15em;height:1.15em;fill:currentColor;flex:none}
 .bas p{margin:0;color:var(--soluk);max-width:56ch}
 .ara-bas{margin-top:28px}
 
+/* metin bölümleri */
+.yazi h2{margin-bottom:12px}
+.yz{max-width:72ch}
+.yz p{margin:0 0 14px;font-size:1.03rem;color:#3B2D37}
+.yz a{font-weight:700}
+.yazi .izgara,.yazi .adim,.yazi .magaza,.yazi .tablo-k{margin-top:18px}
+.tablo-k{overflow-x:auto;border:1px solid var(--cizgi);border-radius:var(--r)}
+.tablo{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+.tablo th,.tablo td{padding:12px 16px;text-align:left;border-bottom:1px solid var(--cizgi)}
+.tablo thead th{background:var(--pembe-z);color:var(--murdum);font-size:.82rem;text-transform:uppercase;letter-spacing:.06em}
+.tablo tbody tr:last-child>*{border-bottom:0}
+.tablo a{color:var(--murdum);font-weight:700}
+.tf{color:var(--gul);font-weight:700;white-space:nowrap}
+
 /* kategori kutuları */
 .kk-izgara{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
 .kk{position:relative;display:block;border-radius:var(--r);overflow:hidden;background:#000;aspect-ratio:4/3;text-decoration:none}

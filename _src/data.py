@@ -38,22 +38,22 @@ TEYITSIZ = ["15 yıl", "yılı aşkın", "garanti", "en iyi", "en ucuz", "en hı
 KATEGORI = [
     {"slug": "gul-buketleri", "ad": "Gül Buketleri", "kisa": "Gül Buketi",
      "title": "Belek Gül Buketi — 9'dan 101 Güle Fiyatlarıyla",
-     "h1": "Gül buketleri", "ozet": "9 güllü renkli buketten 101 Rodos gülüne; her buketin fiyatı kartın üstünde."},
+     "h1": "Belek gül buketi", "ozet": "9 güllü renkli buketten 101 Rodos gülüne; her buketin fiyatı kartın üstünde."},
     {"slug": "orkide-teraryum", "ad": "Orkide ve Teraryum", "kisa": "Orkide",
      "title": "Belek Orkide ve Teraryum — Orkide 1.700 TL",
-     "h1": "Orkide ve teraryum", "ozet": "Uzun ömürlü hediye arayanlar için ithal orkideler ve sukulent teraryumlar."},
+     "h1": "Belek orkide ve teraryum", "ozet": "Uzun ömürlü hediye arayanlar için ithal orkideler ve sukulent teraryumlar."},
     {"slug": "buketler", "ad": "Karışık ve Mevsim Buketleri", "kisa": "Buket",
      "title": "Belek Çiçek Buketleri — Lisyantus, Krizantem, Şebboy",
-     "h1": "Karışık ve mevsim buketleri", "ozet": "Lisyantus, krizantem, şebboy, papatya ve mevsimin çiçekleriyle hazırlanan buketler."},
+     "h1": "Belek çiçek buketleri", "ozet": "Lisyantus, krizantem, şebboy, papatya ve mevsimin çiçekleriyle hazırlanan buketler."},
     {"slug": "kutuda-aranjman", "ad": "Kutuda Aranjmanlar", "kisa": "Kutu Aranjman",
      "title": "Belek Kutuda Çiçek Aranjmanı — Kalp Kutu 31 Gül",
-     "h1": "Kutuda aranjmanlar", "ozet": "Silindir ve kalp kutularda gül, şakayık ve karışık aranjmanlar."},
+     "h1": "Belek kutuda çiçek aranjmanı", "ozet": "Silindir ve kalp kutularda gül, şakayık ve karışık aranjmanlar."},
     {"slug": "hediye-ayicikli", "ad": "Ayıcıklı ve Hediyelik", "kisa": "Hediye",
      "title": "Belek Ayıcıklı Buket ve Peluş Ayıcık Hediye",
-     "h1": "Ayıcıklı buketler ve hediyelik", "ozet": "Peluş ayıcıklar, ayıcıklı buketler ve çikolatalı kutular."},
+     "h1": "Belek ayıcıklı buket ve hediyelik", "ozet": "Peluş ayıcıklar, ayıcıklı buketler ve çikolatalı kutular."},
     {"slug": "gelin-cicegi-arac-susleme", "ad": "Gelin Çiçeği ve Araç Süsleme", "kisa": "Gelin & Araç",
      "title": "Belek Gelin Çiçeği ve Gelin Arabası Süsleme",
-     "h1": "Gelin çiçeği ve araç süsleme", "ozet": "Gelin buketleri ve düğün, nişan, sünnet için araç süsleme."},
+     "h1": "Belek gelin çiçeği ve araç süsleme", "ozet": "Gelin buketleri ve düğün, nişan, sünnet için araç süsleme."},
 ]
 
 # ── FİYATLI ÜRÜNLER (diaflowers.com'daki 18 ürün; fiyat BİREBİR) ─────────────
